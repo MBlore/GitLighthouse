@@ -216,7 +216,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GitLighthouse\Lighthouse.Business.csproj">
+    <ProjectReference Include="..\Lighthouse.Business\Lighthouse.Business.csproj">
       <Project>{f3835cac-6a89-491a-bfb4-deb08a210c20}</Project>
       <Name>Lighthouse.Business</Name>
     </ProjectReference>

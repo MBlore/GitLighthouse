@@ -14,9 +14,11 @@ h3,h4 {
 }
 
 .conflict {
-    font-family: Courier New, Courier, monospace;
-    color: #f00;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #870000;
     margin: 0;
+    word-wrap: break-word;
 }
 
 .branchTitle {
