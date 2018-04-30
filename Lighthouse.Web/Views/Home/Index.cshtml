@@ -51,7 +51,6 @@
             var branchName = $("#selBranches option:selected").text();
 
             $.get("Home/GetConflicts?repoName=" + repoName + "&branchName=" + branchName, function (data) {
-                console.log(data);
 
                 $("#summary").removeClass("hide");
 
