@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Conflicts Report</h3>
+        <div class="form-group">
+            <select class="form-control" id="selRepos">
+                <option disabled selected value>Select a repository...</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" id="selBranches">
+                <option disabled selected value>Select a branch...</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="summary" class="row hide">
+    <div class="col-md-8">
+        <h4>Summary</h4>
+        <p id="noConflicts" class="hide">This branch is not currently conflicting with any other branches.</p>
+        <p id="conflictCount">This branch has conflicts with <span id="branchCount">0</span> other <span id="branchWord"></span>.</p>
+        <div id="branchList"></div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $.get("Home/GetRepos", function (data) {
+            $.each(data, function (index, value) {
+                $("#selRepos").append(new Option(value, value));
+            });
+        });
+
+        $("#selRepos").change(function () {
+            var repoName = $("#selRepos option:selected").text();
+
+            $.get("Home/GetBranches?repoName=" + repoName, function (data) {
+                $.each(data, function (index, value) {
+                    $("#selBranches").append(new Option(value, value));
+                });
+            });
+        });
+
+        $("#selBranches").change(function () {
+            var repoName = $("#selRepos option:selected").text();
+            var branchName = $("#selBranches option:selected").text();
+
+            $.get("Home/GetConflicts?repoName=" + repoName + "&branchName=" + branchName, function (data) {
+                console.log(data);
+
+                $("#summary").removeClass("hide");
+
+                if (data.length === 0) {
+                    // No conflicts.
+                    $("#noConflicts").removeClass("hide");
+                } else {
+                    // Conflicts.
+                    $("#noConflicts").addClass("hide");
+
+                    if (data.length === 1) {
+                        $("#branchWord").text("branch");
+                    } else {
+                        $("#branchWord").text("branches");
+                    }
+
+                    $("#branchCount").text(data.length);
+
+                    $("#branchList").empty();
+
+                    $.each(data, function (index, item) {
+
+                        var branch = $("<h4 class='branchTitle'>").text("Conflicts On Branch '" + item.name + "':");
+                        $("#branchList").append(branch);
+
+                        var lastAuthor = $("<p>").text("(Last Commit Author: " + item.lastCommitAuthor + ")");
+                        $("#branchList").append(lastAuthor);
+
+                        $.each(item.conflictingPaths, function (i, conflict) {
+                            $("#branchList").append(
+                                $("<p class='conflict'>").text(conflict));
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+}

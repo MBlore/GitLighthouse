@@ -1,0 +1,17 @@
+{
+  "repositories": [
+    {
+      "name": "Test Repo",
+      "url": "",
+      "useDefaultCredentials": false,
+      "username": "",
+      "password": "",
+
+      "excludeBranches": [
+        "master"
+      ],
+
+      "ignoreBranchesOlderThanDays": 30
+    }
+  ]
+}
